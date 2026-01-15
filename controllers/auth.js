@@ -21,7 +21,8 @@ const registerUser = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
     req.body.password = hashedPassword;
     await User.create(req.body);
-    return res.send("Created user!");
+    res.redirect("/");
+    // return res.send("Created user!");
   }
 };
 
@@ -51,4 +52,10 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { register, registerUser, login, loginUser };
+// GET "/auth/logout"
+const logout = (req, res) => {
+  req.session.destroy();
+  return res.redirect("/");
+};
+
+module.exports = { register, registerUser, login, loginUser, logout };

@@ -5,7 +5,9 @@ const router = Router();
 
 // Routes
 router.get("/", (req, res) => {
-  res.render("index.ejs");
+  res.render("index.ejs", {
+    user: req.session.user,
+  });
 });
 
 router.use("/auth", authRoutes);

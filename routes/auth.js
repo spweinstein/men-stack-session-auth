@@ -5,5 +5,7 @@ const router = Router();
 
 router.get("/register", controllers.register); // Render register form
 router.post("/register", controllers.registerUser); // Process post request
+router.get("/login", controllers.login);
+router.post("/login", controllers.loginUser);
 
 module.exports = router;

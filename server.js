@@ -5,6 +5,7 @@ const path = require("path");
 const db = require("./db/connection.js");
 const app = express();
 const routes = require("./routes/index.js");
+const session = require("express-session");
 
 // Constants
 const PORT = process.env.PORT ? process.env.PORT : 3000; // Set the port from environment variable or default to 3000
@@ -19,6 +20,13 @@ app.use(express.urlencoded({ extended: false })); // Middleware to parse URL-enc
 app.use(methodOverride("_method")); // Middleware for using HTTP verbs such as PUT or DELETE
 app.use(logger("dev")); // Morgan for logging HTTP requests
 app.use(express.static(path.join(__dirname, "public"))); // Configures public assets folder
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // Routes
 app.use(routes);

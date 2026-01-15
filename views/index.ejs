@@ -8,5 +8,10 @@
   <body>
     <%- include("partials/nav.ejs"); %>
     <h1>User Login Session Auth App</h1>
+    <% if (user) { %>
+    <p>Welcome to the app, <%= user.username %>!</p>
+    <% } else { %>
+    <p>Welcome to the app, guest.</p>
+    <% } %>
   </body>
 </html>

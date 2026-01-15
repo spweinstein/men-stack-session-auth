@@ -20,9 +20,17 @@ const registerUser = async (req, res) => {
     // Hash the password
     const hashedPassword = bcrypt.hashSync(password, 10);
     req.body.password = hashedPassword;
-    await User.create(req.body);
-    res.redirect("/");
-    // return res.send("Created user!");
+    const createdUser = await User.create({
+      username: username,
+      password: password,
+    });
+    req.session.user = {
+      username: createdUser.username,
+      _id: createdUser._id,
+    };
+    req.session.save(() => {
+      res.redirect("/"); // Need to do this asynchronously now that req.session.user is being set asynchronously by MongoStore
+    }); // return res.send("Created user!");
   }
 };
 
@@ -47,15 +55,16 @@ const loginUser = async (req, res) => {
       username: user.username,
       _id: user._id,
     };
-    res.redirect("/");
+    req.session.save(() => {
+      res.redirect("/"); // Need to do this asynchronously now that req.session.user is being set asynchronously by MongoStore
+    });
     // return res.send("User should be logged in!");
   }
 };
 
 // GET "/auth/logout"
 const logout = (req, res) => {
-  req.session.destroy();
-  return res.redirect("/");
+  req.session.destroy(() => res.redirect("/")); // Need to do this asynchronously now that using MongoStore
 };
 
 module.exports = { register, registerUser, login, loginUser, logout };

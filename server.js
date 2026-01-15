@@ -6,6 +6,8 @@ const db = require("./db/connection.js");
 const app = express();
 const routes = require("./routes/index.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
+const passUserToView = require("./middleware/pass-user-to-view.js");
 
 // Constants
 const PORT = process.env.PORT ? process.env.PORT : 3000; // Set the port from environment variable or default to 3000
@@ -25,8 +27,12 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+    }),
   })
 );
+app.use(passUserToView);
 
 // Routes
 app.use(routes);

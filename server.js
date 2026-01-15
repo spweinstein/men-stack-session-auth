@@ -16,10 +16,16 @@ app.use(methodOverride("_method")); // Middleware for using HTTP verbs such as P
 app.use(logger("dev")); // Morgan for logging HTTP requests
 app.use(express.static(path.join(__dirname, "public"))); // Configures public assets folder
 
+// Connect to db & start server
 db.on("connected", () => {
   console.clear();
   console.log(`Connected to MongoDB ${db.name}.`);
   app.listen(PORT, () => {
     console.log(`The express app is ready on port ${PORT}!`);
   });
+});
+
+// Routes
+app.get("/", (req, res) => {
+  res.render("index.ejs");
 });

@@ -6,8 +6,10 @@
     <title>Register</title>
   </head>
   <body>
+    <%- include("../partials/nav.ejs"); %>
+
     <h1>Register a new account!</h1>
-    <form action="" method="">
+    <form action="/auth/register" method="POST">
       <div class="field">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username" />
